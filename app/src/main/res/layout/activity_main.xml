@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000">
+
+    <!-- ═══ CAMERA PREVIEW ═══════════════════════════════════════════════ -->
+    <androidx.camera.view.PreviewView
+        android:id="@+id/viewFinder"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop" />
+
+    <!-- ═══ DETECTION OVERLAY ═══════════════════════════════════════════ -->
+    <com.example.yolodetector.OverlayView
+        android:id="@+id/overlayView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <!-- ═══ DECORATIVE: corner brackets (4 มุม) ═══════════════════════ -->
+    <ImageView
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_gravity="top|start"
+        android:layout_margin="16dp"
+        android:layout_marginTop="80dp"
+        android:src="@drawable/ic_bracket_tl"
+        android:alpha="0.3" />
+
+    <ImageView
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_gravity="top|end"
+        android:layout_margin="16dp"
+        android:layout_marginTop="80dp"
+        android:src="@drawable/ic_bracket_tr"
+        android:alpha="0.3" />
+
+    <ImageView
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_gravity="bottom|start"
+        android:layout_margin="16dp"
+        android:layout_marginBottom="120dp"
+        android:src="@drawable/ic_bracket_bl"
+        android:alpha="0.3" />
+
+    <ImageView
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:layout_marginBottom="120dp"
+        android:src="@drawable/ic_bracket_br"
+        android:alpha="0.3" />
+
+    <!-- ═══ TOP HUD BAR ══════════════════════════════════════════════════ -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:background="@drawable/hud_top_gradient"
+        android:paddingStart="18dp"
+        android:paddingEnd="18dp"
+        android:paddingTop="48dp"
+        android:paddingBottom="16dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <!-- Left: App name + live indicator -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="YOLO DETECTOR"
+                android:textSize="13sp"
+                android:textColor="#FF00FFF7"
+                android:fontFamily="monospace"
+                android:letterSpacing="0.18"
+                android:textStyle="bold" />
+
+            <!-- Live badge row -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginTop="3dp">
+
+                <!-- Pulsing dot (animated via XML animator) -->
+                <View
+                    android:id="@+id/liveDot"
+                    android:layout_width="6dp"
+                    android:layout_height="6dp"
+                    android:background="@drawable/live_dot"
+                    android:layout_marginEnd="5dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="LIVE"
+                    android:textSize="9sp"
+                    android:textColor="#FF00FF88"
+                    android:fontFamily="monospace"
+                    android:letterSpacing="0.12" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Right: FPS badge + model pill -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="end">
+
+            <!-- FPS badge -->
+            <TextView
+                android:id="@+id/tvFps"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0.0 FPS · 0ms"
+                android:textSize="11sp"
+                android:textColor="#FFCCCCCC"
+                android:fontFamily="monospace"
+                android:background="@drawable/fps_badge_bg"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:paddingTop="3dp"
+                android:paddingBottom="3dp" />
+
+            <!-- Model pill -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="YOLOv8n · COCO80"
+                android:textSize="9sp"
+                android:textColor="#8800FFF7"
+                android:fontFamily="monospace"
+                android:letterSpacing="0.06"
+                android:background="@drawable/model_pill_bg"
+                android:paddingStart="9dp"
+                android:paddingEnd="9dp"
+                android:paddingTop="3dp"
+                android:paddingBottom="3dp"
+                android:layout_marginTop="5dp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!-- ═══ BOTTOM HUD BAR ═══════════════════════════════════════════════ -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="@drawable/hud_bottom_gradient"
+        android:paddingStart="18dp"
+        android:paddingEnd="18dp"
+        android:paddingTop="20dp"
+        android:paddingBottom="32dp"
+        android:orientation="vertical">
+
+        <!-- Object count row -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="10dp">
+
+            <!-- Big count + label -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/tvCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:textSize="32sp"
+                    android:textColor="#FFFFFFFF"
+                    android:fontFamily="monospace"
+                    android:textStyle="bold"
+                    android:lineSpacingExtra="0dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" OBJECTS"
+                    android:textSize="10sp"
+                    android:textColor="#FF888888"
+                    android:fontFamily="monospace"
+                    android:letterSpacing="0.10"
+                    android:layout_marginStart="6dp" />
+
+            </LinearLayout>
+
+            <!-- Avg confidence -->
+            <TextView
+                android:id="@+id/tvConf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="avg conf —"
+                android:textSize="10sp"
+                android:textColor="#FF888888"
+                android:fontFamily="monospace" />
+
+        </LinearLayout>
+
+        <!-- Stat chips row -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <!-- Chip: Inference -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:background="@drawable/stat_chip_bg"
+                android:padding="8dp"
+                android:layout_marginEnd="6dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="INFERENCE"
+                    android:textSize="8sp"
+                    android:textColor="#FF555555"
+                    android:fontFamily="monospace"
+                    android:letterSpacing="0.08" />
+
+                <TextView
+                    android:id="@+id/tvInference"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="—"
+                    android:textSize="14sp"
+                    android:textColor="#FF00FFF7"
+                    android:fontFamily="monospace"
+                    android:textStyle="bold"
+                    android:layout_marginTop="1dp" />
+
+            </LinearLayout>
+
+            <!-- Chip: Threshold -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:background="@drawable/stat_chip_bg"
+                android:padding="8dp"
+                android:layout_marginEnd="6dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="THRESHOLD"
+                    android:textSize="8sp"
+                    android:textColor="#FF555555"
+                    android:fontFamily="monospace"
+                    android:letterSpacing="0.08" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="10%"
+                    android:textSize="14sp"
+                    android:textColor="#FFDDDDDD"
+                    android:fontFamily="monospace"
+                    android:textStyle="bold"
+                    android:layout_marginTop="1dp" />
+
+            </LinearLayout>
+
+            <!-- Chip: Status -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:background="@drawable/stat_chip_bg"
+                android:padding="8dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="STATUS"
+                    android:textSize="8sp"
+                    android:textColor="#FF555555"
+                    android:fontFamily="monospace"
+                    android:letterSpacing="0.08" />
+
+                <TextView
+                    android:id="@+id/tvStatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="OK"
+                    android:textSize="14sp"
+                    android:textColor="#FF00FF88"
+                    android:fontFamily="monospace"
+                    android:textStyle="bold"
+                    android:layout_marginTop="1dp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</FrameLayout>
